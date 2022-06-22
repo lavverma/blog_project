@@ -12,9 +12,9 @@ router.post("/authors", authorValidation.authorValidation,authorController.creat
 
 router.post("/blogs",blogValidation.bolgSchemaValidation,blogController.createBlog)
 
-router.get("/getBlog",blogController.getBlog)
+// router.get("/getBlog",blogController.getBlog)
 
-router.get("/blogs",blogValidation.checkValidate,blogController.blogs)
+router.get("/blogs",blogController.blogs)
 
 router.put("/blogs/:blogId",blogValidation.blogIdValidate, blogController.updateBlog)
 

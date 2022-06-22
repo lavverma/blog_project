@@ -9,8 +9,8 @@ let bolgSchemaValidation=async function(req,res,next){
                 if(typeof (data.body)==="string"){
                     if(data.authorId){
                         let check=await authorModel.findById(data.authorId)
-                        if(!check){
-                        //     res.status(400).send({error:"author not valid"})
+                        if(check!=null){
+                            // res.status(400).send()
                         // }else{
                         // if(typeof (data.authorId)==="objectid"){
                             if(typeof(data.tags)==="string"){
@@ -62,6 +62,7 @@ let check=await blogModel.findById(blogId)
     if(!check){
         res.status(404).send({status:false, msg: ""})
     }
+    
     next()
 }
 catch(err){
@@ -78,7 +79,7 @@ let checkValidate=async function(req,res,next){
 let blogId=req.query._id
 let check=await blogModel.findById(blogId)
     if(!check){
-        res.status(404).send({status:false, msg: ""})
+        res.status(404).send({status:false, msg: "abc"})
     }
     next()
 }
