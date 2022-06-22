@@ -8,11 +8,11 @@ const blogSchema = new mongoose.Schema(
     authorId: { type: ObjectId, required: true, ref: "Author" },
     tags: [{ type: String }],
     category: [{ type: String, required: true }],
-    subcategory: [{ type: String }],
+    subcategory: [ String ],
     isDeleted: { type: Boolean, default: false},
     isPublished: { type: Boolean, default: false},
-    deletedAt:{default:Date},
-    publishedAt:{type:Date}
+    deletedAt:{type:Date,default:""},
+    publishedAt:{type:Date,default:""}
   },
   { timestamps: true }
 );

@@ -7,7 +7,7 @@ const createBlog=async function(req,res){
     res.status(201).send({msg:saveData})
 }
 catch(err){
-    res.status(400).send({error: err.message})
+    res.status(500).send({error: err.message})
 }
 }
 module.exports.createBlog= createBlog;
@@ -32,7 +32,7 @@ module.exports.getBlog=getBlog
 const blogs=async function(req,res){
     try{
     let a=req.query
- let getData=await blogModel.find(a)
+ let getData=await blogModel.find({a,isPublished:true,isDeleted:false})
  if(getData.length==0){
     res.status(404).send({status:false, msg:""})
  }else{
@@ -40,7 +40,7 @@ const blogs=async function(req,res){
  }
 }
 catch(err){
-    res.status(400).send({error: err.message})
+    res.status(500).send({error: err.message})
 }
 }
 module.exports.blogs=blogs
@@ -50,14 +50,44 @@ module.exports.blogs=blogs
 
 const updateBlog=async function(req,res){
     try{
-     let updateData=req.body
      let blogId=req.params.blogId
-     let updatedData=await blogModel.findByIdAndUpdate((blogId),(updateData),{new:true})
-     res.status(201).send({status:true,data: updatedData})
+     let findBlog=await blogModel.findById(blogId)
+
+     let updatedTitle=req.body.title
+
+     let updatedBody=req.body.body
+
+
+     let addedTags=req.body.tags
+     let tagArr=findBlog.tags
+     if(addedTags){
+     tagArr.push(addedTags)
+     }else{
+        tagArr.push()
+     }
+
+     let addedCategory=req.body.category
+     let categoryArr=findBlog.category
+     if(addedCategory){
+     categoryArr.push(addedCategory)
+     }else{
+        categoryArr.push()
+     }
+
+     let addedSubCategory=req.body.subcategory
+     let subCategoryArr=findBlog.subcategory
+     if(addedSubCategory){
+     subCategoryArr.push(addedSubCategory)
+     }else{
+        subCategoryArr.push()
+     }
+     
+     let updatedData=await blogModel.findByIdAndUpdate((blogId),{title:updatedTitle,body:updatedBody,tags:tagArr,category:categoryArr,subcategory:subCategoryArr},{new:true})
+     res.status(200).send({status:true,data: updatedData})
     
 }
 catch(err){
-    res.status(400).send({error: err.message})
+    res.status(500).send({error: err.message})
 }
 }
 module.exports.updateBlog=updateBlog
@@ -68,11 +98,12 @@ module.exports.updateBlog=updateBlog
 const deleteBlog=async function(req,res){
     try{
     let blogId=req.params.blogId
-    let deletedData=await blogModel.findByIdAndUpdate((blogId),{$set:{isDeleted:true,isDeleted:new Date()}},{new:true})
-    res.status(201).send({status:true, data:deletedData})
+    let deletedData=await blogModel.findByIdAndUpdate((blogId),{$set:{isDeleted:true,deletedAt:new Date()}},{new:true})
+    console.log(deletedData)
+    res.status(200).send({status:true, data:deletedData})
 }
 catch(err){
-    res.status(400).send({error: err.message})
+    res.status(500).send({error: err.message})
 }
 }
 module.exports.deleteBlog=deleteBlog
@@ -83,11 +114,11 @@ module.exports.deleteBlog=deleteBlog
 const deleteQuery=async function(req,res){
     try{
     let blogId=req.query
-    let deleteData=await blogModel.findByIdAndUpdate((blogId),{isDeleted:true},{new:true})
-    res.send({status:true, data:deleteData})
+    let deleteData=await blogModel.findByIdAndUpdate((blogId),{isDeleted:true,deletedAt:new Date()},{new:true})
+    res.status(200).send({status:true, data:deleteData})
 }
 catch(err){
-    res.status(400).send({error: err.message})
+    res.status(500).send({error: err.message})
 }
 }
 module.exports.deleteQuery=deleteQuery
