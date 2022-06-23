@@ -90,9 +90,9 @@ const updateBlog = async function (req, res) {
       },
       { new: true }
     );
-    res.status(200).send({ status: true, data: updatedData });
+    return res.status(200).send({ status: true, data: updatedData });
   } catch (err) {
-    res.status(500).send({ error: err.message });
+    return res.status(500).send({ error: err.message });
   }
 };
 module.exports.updateBlog = updateBlog;
