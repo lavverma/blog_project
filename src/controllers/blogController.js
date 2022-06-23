@@ -28,14 +28,24 @@ module.exports.getBlog = getBlog;
 const blogs = async function (req, res) {
   try {
     let a = req.query;
-    let getData = await blogModel.find({$and:[{
-      isPublished: true,
-      isDeleted: false,
-    },a]});
-    if (getData.length == 0) {
-      res.status(404).send({ status: false, msg: "" });
+    if (Object.keys(a) != 0) {
+      let getData = await blogModel.find({
+        $and: [
+          {
+            isPublished: true,
+            isDeleted: false,
+          },
+          a,
+        ],
+      });
+      // console.log(getData)
+      if (getData.length == 0) {
+        res.status(404).send({ status: false, msg: "Not Found" });
+      } else {
+        res.status(200).send({ status: true, data: getData });
+      }
     } else {
-      res.status(200).send({ status: true, data: getData });
+      res.status(400).send({ status: false, msg: "Please give Input!" });
     }
   } catch (err) {
     res.status(500).send({ error: err.message });
@@ -49,7 +59,7 @@ const updateBlog = async function (req, res) {
   try {
     let blogId = req.params.blogId;
     let findBlog = await blogModel.findById(blogId);
-    
+
     let updatedTitle = req.body.title;
 
     let updatedBody = req.body.body;
@@ -119,13 +129,11 @@ module.exports.deleteBlog = deleteBlog;
 
 const deleteQuery = async function (req, res) {
   try {
-    let blogId = req.query._id;
-    let deleteData = await blogModel.findByIdAndUpdate(
-      blogId,
-      { isDeleted: true, deletedAt: new Date() },
-      { new: true }
-    );
-    res.status(200).send({ status: true, data: deleteData });
+    let blogId = req.query;
+    let deleteData = await blogModel.updateMany(blogId,{ isDeleted: true, deletedAt: new Date() }, { new: true });
+    let final =await blogModel.find(blogId)
+    res.status(200).send({ status: true, data: final });
+
   } catch (err) {
     res.status(500).send({ error: err.message });
   }

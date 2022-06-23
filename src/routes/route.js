@@ -13,16 +13,16 @@ router.post("/authors", authorValidation.authorValidation,authorController.creat
 
 router.post("/blogs",authVerify.authentication,blogValidation.bolgSchemaValidation,blogController.createBlog)
 
-// router.get("/getBlog",blogController.getBlog)
+
+router.get("/getBlog",blogController.getBlog)
+router.get("/blogs",authVerify.authentication,blogController.blogs)
+
+router.put("/blogs/:blogId",authVerify.authentication,authVerify.authorization,blogValidation.blogIdValidate, blogController.updateBlog)
+
+router.delete("/blogs/:blogId",authVerify.authentication,authVerify.authorization,blogValidation.blogIdValidate,blogController.deleteBlog)
+
+router.delete("/blogs",authVerify.authentication,blogController.deleteQuery)
+
 router.post("/login",authorController.login)
-
-router.get("/blogs",authVerify.authentication,authVerify.authentication,blogController.blogs)
-
-router.put("/blogs/:blogId",authVerify.authentication,blogValidation.blogIdValidate, blogController.updateBlog)
-
-router.delete("/blogs/:blogId",authVerify.authentication,blogValidation.blogIdValidate,blogController.deleteBlog)
-
-router.delete("/blogs",authVerify.authentication, blogValidation.checkValidate,blogController.deleteQuery)
-
 
 module.exports = router;

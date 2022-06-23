@@ -10,7 +10,7 @@ const authorSchema = new mongoose.Schema(
       unique: true,
       required: true,
     },
-    password: { type: String, require: true },
+    password: { type: String, require: true  },
   },
   { timestamps: true }
 );
