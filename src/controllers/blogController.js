@@ -117,7 +117,6 @@ const deleteBlog = async function (req, res) {
       { $set: { isDeleted: true, deletedAt: new Date() } },
       { new: true }
     );
-    // console.log(deletedData);
     res.status(200).send({ status: true, data: deletedData });
   } catch (err) {
     res.status(500).send({ error: err.message });
@@ -132,7 +131,11 @@ const deleteQuery = async function (req, res) {
     let blogId = req.query;
     let deleteData = await blogModel.updateMany(blogId,{ isDeleted: true, deletedAt: new Date() }, { new: true });
     let final =await blogModel.find(blogId)
+    if(final.length!=0){
     res.status(200).send({ status: true, data: final });
+    }else{
+      res.status(400).send({status:false, msg:"no such blog is found"})
+    }
 
   } catch (err) {
     res.status(500).send({ error: err.message });

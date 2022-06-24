@@ -1,4 +1,5 @@
 const authorModel = require("../models/authorModel")
+var validator = require('validator')
 
 
 const authorValidation = async function (req, res, next) {
@@ -6,18 +7,19 @@ const authorValidation = async function (req, res, next) {
     let data = req.body
     if (data.fname) {
         if (typeof (data.fname) === "string") {
+            let fname=data.fname
+            if(validator.isAlpha(fname)==true){
             if (data.lname) {
                 if (typeof (data.lname) === "string") {
+                    let lname=data.lname
+                    if(validator.isAlpha(lname)==true){
                     if (data.title) {
                         if (typeof (data.title) === "string") {
                             if (data.title == "Mr" || data.title == "Mrs" || data.title == "Miss") {
                                 if (data.email) {
                                     if (typeof (data.email) === "string") {
-                                        function validateEmail(email) {
-                                            var re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-                                            return re.test(email)
-                                        }
-                                        if (validateEmail(data.email) == true) {
+                                        let email=data.email
+                                        if (validator.isEmail(email) == true) {
                                             if (data.password) {
                                                 if (typeof (data.password) === "string") {
                                                     next()
@@ -46,11 +48,17 @@ const authorValidation = async function (req, res, next) {
                         res.status(400).send({ error: "title is mandatory" })
                     }
                 } else {
+                    res.status(400).send({ error: "please give valid lname" })
+                }
+                } else {
                     res.status(400).send({ error: "please give lname in string" })
                 }
             } else {
                 res.status(400).send({ error: "lname is mandatory" })
             }
+        } else {
+            res.status(400).send({ error: "please give valid fname" })
+        }
         } else {
             res.status(400).send({ error: "please give fname in string" })
         }
