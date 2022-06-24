@@ -1,5 +1,6 @@
 const authorModel = require("../models/authorModel");
 const blogModel = require("../models/blogModel");
+// var validator = require('validator')
 
 let bolgSchemaValidation=async function(req,res,next){
     let data=req.body
@@ -10,14 +11,16 @@ let bolgSchemaValidation=async function(req,res,next){
                     if(data.authorId){
                         let check=await authorModel.findById(data.authorId)
                         if(check!=null){
-                            // res.status(400).send()
-                        // }else{
-                        // if(typeof (data.authorId)==="objectid"){
-                            if(typeof(data.tags)==="string"){
+                            if(typeof(data.tags)==="string" || !(data.tags)){
                                 if(data.category){
                                     if(typeof (data.category)==="string"){
-                                        if(typeof(data.subcategory)==="string"){
+                                        if(typeof(data.subcategory)==="string" || !(data.subcategory)){
+                                            if((/^(true|false|True|False|TRUE|FALSE)$/).test(data.isPublished) && typeof(data.isPublished) != "string"
+                                            ){
                                             next()
+                                        }else{
+                                            res.status(400).send({error:"please give publisher true or false" })
+                                        }
                                         }else{
                                             res.status(400).send({error:"please give subcategory in string" })
                                         }
@@ -30,8 +33,6 @@ let bolgSchemaValidation=async function(req,res,next){
                             }else{
                                 res.status(400).send({error: "please give tags in string" })
                             }
-                        // }else{
-                        //     res.status(404).send({error: "please give authorId in objectid" })
                         }else{
                             res.status(400).send({error:"author not valid"})
                         }
