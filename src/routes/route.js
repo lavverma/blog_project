@@ -21,7 +21,7 @@ router.put("/blogs/:blogId",authVerify.authentication,authVerify.authorization,b
 
 router.delete("/blogs/:blogId",authVerify.authentication,authVerify.authorization,blogValidation.blogIdValidate,blogController.deleteBlog)
 
-router.delete("/blogs",authVerify.authentication,blogController.deleteQuery)
+router.delete("/blogs",authVerify.authentication,authVerify.authorization,blogController.deleteQuery)
 
 router.post("/login",authorController.login)
 

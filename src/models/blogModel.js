@@ -5,7 +5,7 @@ const blogSchema = new mongoose.Schema(
   {
     title: { type: String, required: true },
     body: { type: String ,required:true},
-    authorId: { type: ObjectId, required: true, ref: "author" },
+    authorId: { type: ObjectId, required: true, ref: "Author" },
     tags: { type: [String] },
     category: [{ type: String, required: true }],
     subcategory: [{ type: String }],
