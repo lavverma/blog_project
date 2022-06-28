@@ -31,7 +31,10 @@ const authorization = async function (req, res, next) {
 
     let userToBeModified = req.params.blogId;
     let userVerify = await blogModel.findOne({ _id: userToBeModified });
-
+console.log(userVerify)
+if(userVerify==null){
+  res.status(404).send({status:false,msg:"blogId not present"})
+}
     let autherverify = userVerify.authorId;
 
     let userLoggedIn = decodedToken.userId;

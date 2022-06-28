@@ -20,37 +20,70 @@ let bolgSchemaValidation = async function (req, res, next) {
                                                 ) {
                                                     next()
                                                 } else {
-                                                    res.status(400).send({ error: "please give publisher true or false" })
+                                                    res.status(400).send({
+                                                        status: false,
+                                                        msg: "please give publisher true or false"
+                                                    })
                                                 }
                                             } else {
-                                                res.status(400).send({ error: "please give subcategory in string" })
+                                                res.status(400).send({
+                                                    status: false,
+                                                    msg: "please give subcategory in string"
+                                                })
                                             }
                                         } else {
-                                            res.status(400).send({ error: "please give category in string" })
+                                            res.status(400).send({
+                                                status: false,
+                                                msg: "please give category in string"
+                                            })
                                         }
                                     } else {
-                                        res.status(400).send({ error: "category is mandatory" })
+                                        res.status(400).send({
+                                            status: false,
+                                            msg: "category is mandatory"
+                                        })
                                     }
                                 } else {
-                                    res.status(400).send({ error: "please give tags in string" })
+                                    res.status(400).send({
+                                        status: false,
+                                        msg: "please give tags in string"
+                                    })
                                 }
                             } else {
-                                res.status(400).send({ error: "author not valid" })
+                                res.status(400).send({
+                                    status: false,
+                                    msg: "author not valid"
+                                })
                             }
                         } else {
-                            res.status(400).send({ error: "authorId is mandatory" })
+                            res.status(400).send({
+                                status: false,
+                                msg: "authorId is mandatory"
+                            })
                         }
                     } else {
-                        res.status(400).send({ error: "please give body in string" })
+                        res.status(400).send({
+                            status: false,
+                            msg: "please give body in string"
+                        })
                     }
                 } else {
-                    res.status(400).send({ error: "body is mandatory" })
+                    res.status(400).send({
+                        status: false,
+                        msg: "body is mandatory"
+                    })
                 }
             } else {
-                res.status(400).send({ error: "please give title in string" })
+                res.status(400).send({
+                    status: false,
+                    msg: "please give title in string"
+                })
             }
         } else {
-            res.status(400).send({ error: "title is mandatory" })
+            res.status(400).send({
+                status: false,
+                msg: "title is mandatory"
+            })
         }
     }
     catch (err) {
@@ -67,7 +100,7 @@ let blogIdValidate = async function (req, res, next) {
         let blogId = req.params.blogId
         let check = await blogModel.findById(blogId)
         if (!check) {
-            return res.status(404).send({ status: false, msg: "" })
+            return res.status(404).send({ status: false, msg: "blog not present" })
         }
 
         next()

@@ -14,6 +14,9 @@ const createAuthor = async function (req, res) {
 
 module.exports.createAuthor = createAuthor;
 
+
+///////////////////////////////////////////////////////////////////
+
 const login = async function (req, res) {
   try {
     let userName = req.body.email;
@@ -52,7 +55,7 @@ const login = async function (req, res) {
       "Project-1 Blog-Site"
     );
     res.setHeader("x-api-key", token);
-    res.status(201).send({ status: true, data: token });
+    res.status(201).send({ status: true, data: {token:token} });
   } catch (error) {
     res.status(500).send({ status: false, msg: error.message });
   }
