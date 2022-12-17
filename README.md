@@ -16,7 +16,7 @@ Create a blog document from request body. Get authorId in request body only.
 
 Make sure the authorId is a valid authorId by checking the author exist in the authors collection.
 
-Return HTTP status 201 on a succesful blog creation. Also return the blog document. The response should be a JSON object like this
+Return HTTP status 201 on a succesfull blog creation. Also return the blog document. The response should be a JSON object like this
 
 Create atleast 5 blogs for each author
 

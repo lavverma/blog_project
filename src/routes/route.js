@@ -1,29 +1,24 @@
 const express = require('express');
 const router = express.Router();
 
-const authorController= require("../controllers/authorController")
-const blogController= require("../controllers/blogController")
-const blogValidation=require("../middleware/blogValidation")
-const authorValidation=require("../middleware/authorValidation")
-const authVerify=require("../middleware/auth")
+const {createAuthor, login}= require("../controllers/authorController")
+const {createBlog , blogs, updateBlog,deleteBlog ,  deleteQuery}= require("../controllers/blogController")
+const {authentication, authorization}=require("../middleware/auth")
 
 
 
-router.post("/authors", authorValidation.authorValidation,authorController.createAuthor)
+router.post("/authors",createAuthor)
+router.post("/login",login)
 
-router.post("/blogs",authVerify.authentication,blogValidation.bolgSchemaValidation,blogController.createBlog)
 
+router.post("/blogs",authentication,createBlog)
+router.get("/blogs",authentication,blogs)
 
-router.get("/getBlog",blogController.getBlog)
+router.put("/blogs/:blogId",authentication,authorization, updateBlog)
 
-router.get("/blogs",authVerify.authentication,blogController.blogs)
+router.delete("/blogs/:blogId",authentication,authorization,deleteBlog)
 
-router.put("/blogs/:blogId",authVerify.authentication,authVerify.authorization,blogValidation.blogIdValidate, blogController.updateBlog)
+router.delete("/blogs",authentication,authorization,deleteQuery)
 
-router.delete("/blogs/:blogId",authVerify.authentication,authVerify.authorization,blogValidation.blogIdValidate,blogController.deleteBlog)
-
-router.delete("/blogs",authVerify.authentication,blogController.deleteQuery)
-
-router.post("/login",authorController.login)
 
 module.exports = router;
